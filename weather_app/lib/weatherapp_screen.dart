@@ -1,9 +1,24 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:weather_app/hourlyforecast_item.dart';
+import 'package:weather_app/additionalinfo_item.dart';
+import 'package:http/http.dart' as http;
+import 'package:weather_app/secrets.dart';
+
 
 
 class WeatherScreen extends StatelessWidget {
   const WeatherScreen({super.key});
+
+  Future getCurrentWeather() async {
+    String cityName = 'London';
+    http.get(
+      Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?q=$cityName&APPID=$openWeatherAPIKey'
+        ),
+      );
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +58,7 @@ class WeatherScreen extends StatelessWidget {
                       padding: EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Text('300 °F', style: 
+                          Text('300 °K', style: 
                             TextStyle(
                               fontSize: 32,
                               fontWeight:FontWeight.bold 
@@ -77,57 +92,67 @@ class WeatherScreen extends StatelessWidget {
             scrollDirection: Axis.horizontal,
               child:  Row(
                 children: [
-                  HourlyForecastItem(),
-                  HourlyForecastItem(),
-                  HourlyForecastItem(),
-                  HourlyForecastItem(),
-                  HourlyForecastItem()
+                  HourlyForecastItem(
+                    time: '09:00',
+                    icon: Icons.cloud,
+                    temp: '307 K',
+                  ),
+                  HourlyForecastItem(
+                    time: '12:00',
+                    icon: Icons.sunny,
+                    temp: '306.5 K',
+                  ),
+                  HourlyForecastItem(
+                    time: '15:00',
+                    icon: Icons.cloud,
+                    temp: '305 K',
+                  ),
+                  HourlyForecastItem(
+                    time: '18:00',
+                    icon: Icons.cloudy_snowing,
+                    temp: '297 K',
+                  ),
+                  HourlyForecastItem(
+                    time: '21:00',
+                    icon: Icons.thunderstorm,
+                    temp: '290.5 K',
+                  )
                 ],
               ),
             ),
-            const  Placeholder(
-              fallbackHeight: 150,
-            ),
             const SizedBox(height: 20),
             // Additional information
-            const Placeholder(
-              fallbackHeight: 150,
+            const  Text('Additional Information', 
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                  AdditionalInfoItem(
+                    icon: Icons.water_drop,
+                    label: 'Humidity',
+                    value: '96',
+                  ),
+                  AdditionalInfoItem(
+                    icon: Icons.air,
+                    label: 'Humidity',
+                    value: '96',
+                    ),
+                  AdditionalInfoItem(
+                    icon: Icons.beach_access,
+                    label: 'Humidity',
+                    value: '96',
+                    )                  
+              ],
             )
-        
           ],
         ),
       ),
     );
   }
 }
-class HourlyForecastItem extends StatelessWidget {
-  const HourlyForecastItem({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      child:  Container(
-      width: 100,
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32)
-      ),
-      child: const  Column(
-        children: [
-          Text('03:00', 
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold
-            ),
-          ),
-          SizedBox(height: 8),
-          Icon(Icons.cloud, size: 32,),
-          SizedBox(height: 8),
-          Text('320 °F'),
-        ],
-      ),
-      ),
-    );
-  }
-}
