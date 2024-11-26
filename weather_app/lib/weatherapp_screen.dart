@@ -7,16 +7,29 @@ import 'package:weather_app/secrets.dart';
 
 
 
-class WeatherScreen extends StatelessWidget {
+class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
 
+  @override
+  State<WeatherScreen> createState() => _WeatherScreenState();
+}
+
+class _WeatherScreenState extends State<WeatherScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getCurrentWeather();
+  }
+
+
   Future getCurrentWeather() async {
-    String cityName = 'London';
-    http.get(
+    String cityName = 'Lagos';
+    final res = await http.get(
       Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?q=$cityName&APPID=$openWeatherAPIKey'
         ),
       );
+      print(res.body);
 
   }
 
