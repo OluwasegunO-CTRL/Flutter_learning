@@ -15,13 +15,13 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  double temp = 0;
+  // double temp = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    getCurrentWeather();
-  }
+  // // @override
+  // void initState() {
+  //   super.initState();
+  //   getCurrentWeather();
+  // }
 
   Future <Map<String, dynamic>> getCurrentWeather() async {
     try{
@@ -69,16 +69,27 @@ class _WeatherScreenState extends State<WeatherScreen> {
       body: FutureBuilder(
         future: getCurrentWeather(),
         builder: (context, snapshot) {
-          print(snapshot);
+          // print(snapshot);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator.adaptive()
             );
+          }         
+          if (snapshot.hasError){
+            return Center(
+              child: Text(snapshot.hasError.toString())
+            );
           }
 
-          if (snapshot.hasError){
-            return Text(snapshot.hasError.toString());
-          }
+           final data = snapshot.data!;
+
+           final currentWeatherData = data['list'][0];
+           double currentTemp = currentWeatherData['main']['temp'];
+            double currentTempo = currentTemp - 274.15;
+            int realTemp = currentTempo.toInt();
+
+            final currentSky =  currentWeatherData['weather'][0]['main'];
+          
           return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -96,23 +107,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     borderRadius: BorderRadius.circular(16),
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: const  Padding(
-                        padding:   EdgeInsets.all(16.0),
+                      child:  Padding(
+                        padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            Text('200°K', style: 
-                              TextStyle(
-                                fontSize: 32,
-                                fontWeight:FontWeight.bold 
+                            Text('$realTemp °C', 
+                            style: const TextStyle(
+                              fontSize: 32,
+                              fontWeight:FontWeight.bold 
                               ),
                             ),
-                            SizedBox(height: 16,),
-                            Icon(Icons.cloud,
+                            const SizedBox(height: 16,),
+                            Icon(
+                              currentSky == 'Clouds' || currentSky == 'Rain' ? Icons.cloud: Icons.sunny,
                               size: 64,),
-                            SizedBox(height: 16,),
-                            Text('Rain', 
-                              style: TextStyle(
-                              fontSize: 20),
+                            const SizedBox(height: 16,),
+                            Text( currentSky, 
+                              style: const TextStyle(
+                                fontSize: 20),
                             ),
                           ],
                         ),
