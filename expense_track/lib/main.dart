@@ -32,7 +32,7 @@ class ExpenseTrack extends StatelessWidget {
           backgroundColor: kDarkColorScheme.secondaryContainer,
           foregroundColor: kDarkColorScheme.onPrimaryContainer,
         ),
-        cardTheme: const CardTheme().copyWith(
+        cardTheme: CardThemeData().copyWith(
           color: kDarkColorScheme.onPrimary,
           margin: EdgeInsets.symmetric(
             horizontal: 16,
@@ -52,7 +52,7 @@ class ExpenseTrack extends StatelessWidget {
           backgroundColor: kColorScheme.onPrimaryContainer,
           foregroundColor: kColorScheme.primaryContainer,
         ),
-        cardTheme: const CardTheme().copyWith(
+        cardTheme: const CardThemeData().copyWith(
           color: kColorScheme.secondaryContainer,
           margin: EdgeInsets.symmetric(
             horizontal: 16,
